@@ -7,20 +7,15 @@
         </div>
         <div class="i-box">
           <input
-            placeholder="      Enter an item"
             class="input"
-            v-model="newToDo"
+            v-model="task"
             type="text"
+            placeholder="     Add a new task"
           />
-          <button v-on:click="add()" class="add-button accent">+</button>
+          <button class="add-button accent" @click="addTask()">+</button>
         </div>
         <div class="l-box">
-          <ul class="list">
-            <li class="items" :key="todo.i" v-for="(todo, i) in existingToDo">
-              <span> {{ i + 1 }}: {{ todo.text }} </span>
-              <button @click="deleteToDo(i)" class="delete-button">X</button>
-            </li>
-          </ul>
+          <List :taskList="newTask" />
         </div>
       </div>
     </div>
@@ -28,24 +23,23 @@
 </template>
 
 <script>
+import List from "@/components/List.vue";
 export default {
   name: "App",
   data() {
     return {
-      newToDo: "",
-      existingToDo: [],
+      newTask: [],
+      task: "",
     };
   },
+  components: {
+    List,
+  },
   methods: {
-    add() {
-      this.existingToDo.push({
-        text: this.newToDo,
-        id: new Date().valueOf(),
-      }),
-        (this.newToDo = "");
-    },
-    deleteToDo(i) {
-      this.existingToDo.splice(i, 1);
+    addTask() {
+      if (!this.task) return;
+      this.newTask.push({ task: this.task });
+      this.task = "";
     },
   },
 };
